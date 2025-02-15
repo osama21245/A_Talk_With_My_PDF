@@ -7,6 +7,10 @@ type Props = {
   isLoading: boolean;
 };
 
+interface ExtendedMessage extends Message {
+  reasoning?: string;
+}
+
 const MessageList = ({ messages, isLoading }: Props) => {
   if (isLoading) {
     return (
@@ -19,6 +23,7 @@ const MessageList = ({ messages, isLoading }: Props) => {
   return (
     <div className="flex flex-col gap-2 px-4 py-2 min-h-full">
       {messages.map((message) => {
+        const extendedMessage = message as ExtendedMessage;
         const isAssistant = message.role === "assistant" || message.role === "system";
         return (
           <div
@@ -37,9 +42,9 @@ const MessageList = ({ messages, isLoading }: Props) => {
                 }
               )}
             >
-              {(message as any).reasoning && (
+              {extendedMessage.reasoning && (
                 <pre className="text-xs text-[#00FF9D]/70 mb-2 whitespace-pre-wrap">
-                  {(message as any).reasoning}
+                  {extendedMessage.reasoning}
                 </pre>
               )}
               <p>

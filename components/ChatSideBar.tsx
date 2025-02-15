@@ -3,27 +3,20 @@ import { DrizzleChat } from "@/lib/db/schema";
 import Link from "next/link";
 import React from "react";
 import { Button } from "./ui/button";
-import { MessageCircle, PlusCircle, MessageSquare } from "lucide-react";
+import { PlusCircle, MessageSquare } from "lucide-react";
 import { cn } from "@/lib/utils";
-import axios from "axios";
-//import SubscriptionButton from "./SubscriptionButton";
 
 type Props = {
   chats: DrizzleChat[];
   chatId: number;
-  //isPro: boolean;
 };
 
 const ChatSideBar = ({ chats, chatId }: Props) => {
-  const [loading, setLoading] = React.useState(false);
-
   return (
     <div className="flex flex-col h-full">
       <div className="p-4 border-b border-[#00FF9D]/20">
         <Link href="/">
-          <Button 
-            className="w-full bg-gradient-to-r from-[#00FF9D] to-[#39FF14] hover:opacity-90 text-black"
-          >
+          <Button className="w-full bg-gradient-to-r from-[#00FF9D] to-[#39FF14] hover:opacity-90 text-black">
             <PlusCircle className="mr-2 w-4 h-4" />
             New Chat
           </Button>
