@@ -10,44 +10,43 @@ import { redirect } from "next/navigation";
 import React from "react";
 
 interface Props {
-  params: {
-    chatId: string;
-  };
+  params: { chatId: string };
 }
 
 const ChatPage = async ({ params }: Props) => {
   const { chatId } = params;
   const { userId } = await auth();
-  
+
   if (!userId) {
-    return redirect("/sign-in");
+    redirect("/sign-in");
   }
 
   const _chats = await db.select().from(chats).where(eq(chats.userId, userId));
-  if (!_chats) {
-    return redirect("/");
-  }
-  if (!_chats.find((chat) => chat.id === parseInt(chatId))) {
-    return redirect("/");
+
+  if (!_chats || _chats.length === 0) {
+    redirect("/");
   }
 
-  const currentChat = _chats.find((chat) => chat.id === parseInt(chatId));
-  //const isPro = await checkSubscription();
+  const currentChat = _chats.find((chat) => chat.id === Number(chatId));
+
+  if (!currentChat) {
+    redirect("/");
+  }
 
   return (
     <div className="flex h-screen overflow-hidden bg-[#0D1117]">
       <div className="flex w-full h-full overflow-hidden">
-        {/* chat sidebar */}
+        {/* Chat Sidebar */}
         <div className="flex-[3] max-w-xs h-full overflow-y-auto bg-[#161B22] border-r border-[#00FF9D]/20">
-          <ChatSideBar chats={_chats} chatId={parseInt(chatId)} />
+          <ChatSideBar chats={_chats} chatId={Number(chatId)} />
         </div>
-        {/* pdf viewer */}
+        {/* PDF Viewer */}
         <div className="flex-[5] p-4 overflow-y-auto bg-[#0D1117]">
-          <PDFViewer pdf_url={currentChat?.pdfUrl || ""} />
+          <PDFViewer pdf_url={currentChat.pdfUrl || ""} />
         </div>
-        {/* chat component */}
+        {/* Chat Component */}
         <div className="flex-[3] border-l border-[#00FF9D]/20 h-full overflow-y-auto bg-[#161B22]">
-          <ChatComponent chatId={parseInt(chatId)} />
+          <ChatComponent chatId={Number(chatId)} />
         </div>
       </div>
     </div>
