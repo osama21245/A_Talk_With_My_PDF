@@ -3,18 +3,18 @@ import ChatSideBar from "@/components/ChatSideBar";
 import PDFViewer from "@/components/PDFViewer";
 import { db } from "@/lib/db";
 import { chats } from "@/lib/db/schema";
-//import { checkSubscription } from "@/lib/subscription";
 import { auth } from "@clerk/nextjs/server";
 import { eq } from "drizzle-orm";
 import { redirect } from "next/navigation";
-import React from "react";
+import { FC } from "react";
 
 interface Props {
-  params: { chatId: string };
+  params: Promise<{ chatId: string }>;
 }
 
-const ChatPage = async ({ params }: Props) => {
-  const { chatId } = params;
+const ChatPage: FC<Props> = async ({ params }) => {
+  const resolvedParams = await params;
+  const { chatId } = resolvedParams;
   const { userId } = await auth();
 
   if (!userId) {
