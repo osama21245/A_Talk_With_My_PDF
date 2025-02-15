@@ -64,8 +64,12 @@ npm run dev
 ## 📸 Screenshots
 
 <div align="center">
-  <img src="public/screenshots/chat-interface.png" alt="Chat Interface" width="800"/>
-  <p><em>Interactive Chat Interface with PDF Context</em></p>
+  <img width="1439" alt="Screenshot 2025-02-15 at 11 33 04 PM" src="https://github.com/user-attachments/assets/d27b9f31-a888-4ed4-b08d-3091c3ef353f" />
+<img width="1440" alt="Screenshot 2025-02-15 at 11 30 09 PM" src="https://github.com/user-attachments/assets/38d82457-34e6-407c-b1a2-8bd0b7e6e29f" />
+  <img width="1440" alt="Screenshot 2025-02-15 at 11 32 15 PM" src="https://github.com/user-attachments/assets/8cb26cd0-58da-44db-90d7-10336894f0f3" />
+
+
+
 </div>
 
 ## 🔥 Key Features in Detail
