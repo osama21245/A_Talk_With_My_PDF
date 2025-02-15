@@ -9,17 +9,20 @@ import { eq } from "drizzle-orm";
 import { redirect } from "next/navigation";
 import React from "react";
 
-type Props = {
+interface Props {
   params: {
     chatId: string;
   };
-};
+}
 
-const ChatPage = async ({ params: { chatId } }: Props) => {
+const ChatPage = async ({ params }: Props) => {
+  const { chatId } = params;
   const { userId } = await auth();
+  
   if (!userId) {
     return redirect("/sign-in");
   }
+
   const _chats = await db.select().from(chats).where(eq(chats.userId, userId));
   if (!_chats) {
     return redirect("/");
