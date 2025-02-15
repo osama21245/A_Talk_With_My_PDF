@@ -1,13 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import {
-  ClerkProvider,
-  SignInButton,
-  SignUpButton,
-  SignedIn,
-  SignedOut,
-  UserButton,
-} from '@clerk/nextjs'
+import { ClerkProvider } from '@clerk/nextjs'
 import Providers from "@/components/provider";
 import { Toaster } from "react-hot-toast";
 import "@fontsource/geist/400.css";

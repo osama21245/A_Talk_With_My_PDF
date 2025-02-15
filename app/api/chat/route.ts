@@ -1,4 +1,4 @@
-import { deepseek } from '@ai-sdk/deepseek';
+// import { deepseek } from '@ai-sdk/deepseek';
 import { Message, streamText } from 'ai';
 import { db } from "@/lib/db";
 import { chats, messages as _messages } from "@/lib/db/schema";

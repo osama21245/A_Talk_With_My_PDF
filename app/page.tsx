@@ -7,6 +7,7 @@ import FileUpload from "@/components/FileUpload";
 import { db } from "@/lib/db";
 import { chats } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
+import Image from "next/image";
 
 export default async function Home() {
   const { userId } = await auth();
@@ -39,10 +40,12 @@ export default async function Home() {
 
       {/* Logo */}
       <div className="absolute top-6 left-6 z-20">
-        <img
+        <Image
           src="/images/lock-removebg-preview.png"
           alt="Logo"
-          className="w-14 h-18 drop-shadow-[0_0_15px_rgba(0,255,157,0.3)]"
+          width={56}
+          height={72}
+          className="drop-shadow-[0_0_15px_rgba(0,255,157,0.3)]"
         />
       </div>
 
