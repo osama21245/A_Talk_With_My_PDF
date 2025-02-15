@@ -15,6 +15,7 @@
     "@aws-sdk/client-s3": "^3.744.0",
     "@aws-sdk/s3-request-presigner": "^3.744.0",
     "@clerk/nextjs": "^6.11.2",
+    "@fontsource/geist": "^5.0.1",
     "@langchain/community": "^0.3.30",
     "@langchain/openai": "^0.4.4",
     "@neondatabase/serverless": "^0.10.4",

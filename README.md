@@ -1,37 +1,96 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# A Talk with My PDF 🚀
 
-## Getting Started
+<div align="center">
+  <img src="public/images/lock-removebg-preview.png" alt="LOCK Logo" width="150"/>
+  <h3>AI-Powered PDF Chat Application</h3>
+</div>
 
-First, run the development server:
+## 🌟 Overview
 
+A Talk with My PDF is a modern AI-powered application that allows users to have interactive conversations with their PDF documents. Built with cutting-edge technology, it provides an intuitive interface for users to upload PDFs and get instant, intelligent responses to their questions.
+
+![App Screenshot](public/screenshots/homepage.png)
+
+## ✨ Features
+
+- 🤖 AI-powered PDF analysis and chat
+- 📁 Secure PDF file upload and storage
+- 💬 Natural conversation interface
+- 🎨 Modern, responsive UI with sleek animations
+- 🔐 Secure authentication
+- 📱 Cross-platform compatibility
+
+## 🛠️ Tech Stack
+
+- **Frontend**: Next.js 14, React, TailwindCSS
+- **Backend**: Node.js, DrizzleORM
+- **Database**: PostgreSQL (Neon)
+- **AI**: Google Gemini Pro
+- **Authentication**: Clerk
+- **Storage**: AWS S3
+- **Vector Database**: Pinecone
+- **Deployment**: Vercel
+
+## 🚀 Getting Started
+
+1. Clone the repository:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/yourusername/a-talk-with-my-pdf.git
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Install dependencies:
+```bash
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. Set up environment variables:
+```env
+# Create a .env file with the following variables
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=
+CLERK_SECRET_KEY=
+DATABASE_URL=
+NEXT_PUBLIC_S3_ACCESS_KEY_ID=
+NEXT_PUBLIC_S3_SECRET_ACCESS_KEY=
+NEXT_PUBLIC_S3_BUCKET_NAME=
+PINECONE_API_KEY=
+GOOGLE_GENERATIVE_AI_API_KEY=
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+4. Run the development server:
+```bash
+npm run dev
+```
 
-## Learn More
+## 📸 Screenshots
 
-To learn more about Next.js, take a look at the following resources:
+<div align="center">
+  <img src="public/screenshots/chat-interface.png" alt="Chat Interface" width="800"/>
+  <p><em>Interactive Chat Interface with PDF Context</em></p>
+</div>
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🔥 Key Features in Detail
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- **PDF Processing**: Upload and process PDF documents securely
+- **Context-Aware Responses**: AI understands and responds based on PDF content
+- **Real-time Chat**: Instant responses with streaming capability
+- **Secure Authentication**: Protected routes and user data
+- **Responsive Design**: Seamless experience across all devices
+- **Modern UI**: Sleek animations and intuitive interface
 
-## Deploy on Vercel
+## 📄 License
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-# A_Talk_With_My_PDF
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## 📧 Contact
+
+For any questions or feedback, please reach out to [your-email@example.com](mailto:your-email@example.com)
+
+---
+
+<div align="center">
+  Made with ❤️ by [Your Name]
+</div>
