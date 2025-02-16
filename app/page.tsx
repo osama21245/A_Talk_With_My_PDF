@@ -8,6 +8,8 @@ import { db } from "@/lib/db";
 import { chats } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
 import Image from "next/image";
+import { checkSubscription } from "@/lib/subscription";
+import SubscriptionButton from "@/components/SubscriptionButton";
 
 export default async function Home() {
   const { userId } = await auth();
@@ -17,6 +19,7 @@ export default async function Home() {
     const chatsData = await db.select().from(chats).where(eq(chats.userId, userId as string));
     firstChat = chatsData?.[0] || null;
   }
+  const isPro = await checkSubscription();
 
   return (
     <div className="w-screen min-h-screen relative bg-[#0D1117] overflow-hidden">
@@ -84,11 +87,19 @@ export default async function Home() {
           {/* Action Section */}
           <div className="max-w-md mx-auto space-y-6">
             {isAuth && firstChat && (
-              <Link href={`/chat/${firstChat.id}`} className="block w-full transform hover:scale-102 transition-all duration-300">
-                <Button className="w-full bg-[#161B22] hover:bg-[#1C2128] border border-[#00FF9D]/30 text-[#00FF9D] px-8 py-6 text-lg font-medium rounded-xl transition-all duration-300 shadow-lg shadow-[#00FF9D]/5 backdrop-blur-sm">
-                  Go to Chats <ArrowRight className="ml-3 w-5 h-5" />
-                </Button>
-              </Link>
+              <div className="flex gap-3">
+                <Link href={`/chat/${firstChat.id}`} className="flex-1">
+                  <Button className="w-full bg-[#161B22] hover:bg-[#1C2128] border border-[#00FF9D]/30 text-[#00FF9D] px-8 py-6 text-lg font-medium rounded-xl transition-all duration-300 shadow-lg shadow-[#00FF9D]/5 backdrop-blur-sm">
+                    Go to Chats <ArrowRight className="ml-3 w-5 h-5" />
+                  </Button>
+                </Link>
+                <div className="flex-1">
+                  <SubscriptionButton 
+                    isPro={isPro} 
+                    className="w-full bg-gradient-to-r from-[#00FF9D] to-[#39FF14] hover:opacity-90 text-black px-8 py-6 text-lg font-medium rounded-xl transition-all duration-300 shadow-lg shadow-[#00FF9D]/20"
+                  />
+                </div>
+              </div>
             )}
 
             {isAuth ? (
