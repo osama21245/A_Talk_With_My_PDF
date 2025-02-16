@@ -1,6 +1,8 @@
 import { Message } from "ai";
-import { Loader2 } from "lucide-react";
+import { Loader2, Copy, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useState } from "react";
+import { Button } from "./ui/button";
 
 type Props = {
   messages: Message[];
@@ -12,6 +14,18 @@ interface ExtendedMessage extends Message {
 }
 
 const MessageList = ({ messages, isLoading }: Props) => {
+  const [copiedMessageId, setCopiedMessageId] = useState<string | null>(null);
+
+  const handleCopy = async (content: string, messageId: string) => {
+    try {
+      await navigator.clipboard.writeText(content);
+      setCopiedMessageId(messageId);
+      setTimeout(() => setCopiedMessageId(null), 2000); // Reset after 2 seconds
+    } catch (err) {
+      console.error('Failed to copy text:', err);
+    }
+  };
+
   if (isLoading) {
     return (
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
@@ -36,6 +50,8 @@ const MessageList = ({ messages, isLoading }: Props) => {
       {messages.map((message) => {
         const extendedMessage = message as ExtendedMessage;
         const isAssistant = message.role === "assistant" || message.role === "system";
+        const isCopied = copiedMessageId === message.id;
+
         return (
           <div
             key={message.id}
@@ -46,15 +62,29 @@ const MessageList = ({ messages, isLoading }: Props) => {
           >
             <div
               className={cn(
-                "rounded-lg px-3 text-sm py-1 shadow-md ring-1 ring-gray-900/10",
+                "rounded-lg px-3 text-sm py-1 shadow-md ring-1 ring-gray-900/10 relative group",
                 {
                   "bg-[#1C2128] text-gray-100": message.role === "user",
-                  "bg-[#161B22] border border-[#00FF9D]/20 text-[#00FF9D]": isAssistant,
+                  "bg-[#1A2333] border border-[#2D4F67]/20 text-[#E2E8F0]": isAssistant,
                 }
               )}
             >
+              {isAssistant && (
+                <Button
+                  onClick={() => handleCopy(message.content, message.id)}
+                  variant="ghost"
+                  size="icon"
+                  className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-[#2D4F67]/20"
+                >
+                  {isCopied ? (
+                    <Check className="h-4 w-4 text-green-500" />
+                  ) : (
+                    <Copy className="h-4 w-4 text-[#94A3B8]" />
+                  )}
+                </Button>
+              )}
               {extendedMessage.reasoning && (
-                <pre className="text-xs text-[#00FF9D]/70 mb-2 whitespace-pre-wrap">
+                <pre className="text-xs text-[#94A3B8] mb-2 whitespace-pre-wrap">
                   {extendedMessage.reasoning}
                 </pre>
               )}
