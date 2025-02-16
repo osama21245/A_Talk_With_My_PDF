@@ -20,6 +20,17 @@ const MessageList = ({ messages, isLoading }: Props) => {
     );
   }
   if (!messages) return <></>;
+
+  const renderContent = (content: string) => {
+    return content.split('\n\n').map((section, index) => (
+      <div key={index} className="mb-4">
+        {section.split('\n').map((line, idx) => (
+          <p key={idx} className="mb-1">{line}</p>
+        ))}
+      </div>
+    ));
+  };
+
   return (
     <div className="flex flex-col gap-2 px-4 py-2 min-h-full">
       {messages.map((message) => {
@@ -47,12 +58,7 @@ const MessageList = ({ messages, isLoading }: Props) => {
                   {extendedMessage.reasoning}
                 </pre>
               )}
-              <p>
-                {typeof message.content === 'string' 
-                  ? message.content 
-                  : JSON.stringify(message.content)
-                }
-              </p>
+              {renderContent(message.content)}
             </div>
           </div>
         );

@@ -24,25 +24,52 @@ export async function POST(req: Request) {
 
     const prompt = {
       role: "system",
-      content: `AI assistant is a brand new, powerful, human-like artificial intelligence.
-      The traits of AI include expert knowledge, helpfulness, cleverness, and articulateness.
-      AI is a well-behaved and well-mannered individual.
-      AI is always friendly, kind, and inspiring, and he is eager to provide vivid and thoughtful responses to the user.
-      AI has the sum of all knowledge in their brain, and is able to accurately answer nearly any question about any topic in conversation.
-      AI assistant is a big fan of Pinecone and Vercel.
-      START CONTEXT BLOCK
+      content: `You are an intelligent and helpful AI assistant with extensive knowledge across many fields.
+
+      When responding to questions, format your answers as follows:
+
+      1. **PDF Content Section**:
+         - Start with "📄 From the PDF content:"
+         - Present information in clear paragraphs
+         - For lists, keep points on the same line separated by • 
+         - End each major point with a period and new line
+         - If not in PDF, state "📄 This topic is not covered in the PDF content."
+
+      2. **Additional Knowledge Section** (after two newlines):
+         - Start with "💡 Additional Information:"
+         - Present main ideas in clear paragraphs.
+         - For related points, use format: Main point • Related point • Another point.
+         - Each new concept starts on a new line.
+         - Use bullet points only for distinct categories.
+
+      3. **Examples Section** (after two newlines):
+         - Start with "🔍 Examples and Applications:"
+         - Format examples as: "Example: [description]"
+         - Related examples on same line separated by •
+         - Each category of examples on new line.
+
+      Format Example:
+      📄 From the PDF content:
+      The main concept is explained here in a clear paragraph.
+      Key points: First point • Second point • Third point.
+      Additional details in a new paragraph.
+
+      💡 Additional Information:
+      The broader context is explained in this paragraph.
+      Related concepts: Concept A • Concept B • Concept C.
+      New topic starts on this line with its own explanation.
+
+      🔍 Examples and Applications:
+      Historical examples: Example 1 • Example 2 • Example 3.
+      Modern applications: Application A • Application B.
+
+      PDF CONTEXT BLOCK:
       ${context}
       END OF CONTEXT BLOCK
-      AI assistant will take into account any CONTEXT BLOCK that is provided in a conversation.
-      If the context does not provide the answer to question, the AI assistant will say, "I'm sorry, but I don't know the answer to that question".
-      AI assistant will not apologize for previous responses, but instead will indicated new information was gained.
-      AI assistant will not invent anything that is not drawn directly from the context.
-      `,
+
+      IMPORTANT: Maintain this formatting structure. Use periods for complete thoughts, bullets (•) for related points on the same line, and new lines for new concepts.`,
     };
 
-
-
-    
     //gemini-1.5-flash-latest
     const result = streamText({
       model: google('gemini-1.5-flash-latest'),
@@ -68,7 +95,7 @@ export async function POST(req: Request) {
     });
 
     // Handle the stream and save AI message
-    const response =  result.toDataStreamResponse()
+    const response = result.toDataStreamResponse()
 
     // const reponse2 = result.toTextStreamResponse()
     // const completion = await response.text();

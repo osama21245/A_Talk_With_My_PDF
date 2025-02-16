@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { useChat } from '@ai-sdk/react';
 import { Button } from "@/components/ui/button";
-import { Send, Loader2 } from "lucide-react";
+import { Send, Loader2, Maximize2, Minimize2 } from "lucide-react";
 import MessageList from "@/components/MessageList";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
@@ -24,6 +24,33 @@ const ChatComponent = ({ chatId }: Props) => {
 
   const [loading, setLoading] = useState(false);
   const [customError, setCustomError] = useState<string | null>(null);
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  const toggleSize = () => {
+    const sidebar = document.querySelector('[data-component="sidebar"]');
+    const pdfViewer = document.querySelector('[data-component="pdf-viewer"]');
+    const chatComponent = document.querySelector('[data-component="chat-component"]');
+
+    if (sidebar && pdfViewer && chatComponent) {
+      if (isExpanded) {
+        // Show sidebar and reset to original sizes
+        sidebar.classList.remove('hidden');
+        sidebar.classList.add('flex-[3]');
+        pdfViewer.classList.remove('flex-[4]');
+        pdfViewer.classList.add('flex-[5]');
+        chatComponent.classList.remove('flex-[7]');
+        chatComponent.classList.add('flex-[3]');
+      } else {
+        // Hide sidebar and expand other components
+        sidebar.classList.add('hidden');
+        pdfViewer.classList.remove('flex-[5]');
+        pdfViewer.classList.add('flex-[4]');
+        chatComponent.classList.remove('flex-[3]');
+        chatComponent.classList.add('flex-[7]');
+      }
+      setIsExpanded(!isExpanded);
+    }
+  };
 
   const { messages, input, handleInputChange, handleSubmit, error } = useChat({
     api: "/api/chat",
@@ -43,11 +70,10 @@ const ChatComponent = ({ chatId }: Props) => {
           role: "system"
         });
         setLoading(false);
-      setCustomError(null);
+        setCustomError(null);
       } catch (err) {
         console.error("Failed to save message:", err);
       }
-      
     },
   });
 
@@ -76,8 +102,15 @@ const ChatComponent = ({ chatId }: Props) => {
   return (
     <div className="flex flex-col h-full">
       {/* header */}
-      <div className="sticky top-0 inset-x-0 p-2 bg-[#161B22] border-b border-[#00FF9D]/20">
+      <div className="sticky top-0 inset-x-0 p-2 bg-[#161B22] border-b border-[#00FF9D]/20 flex justify-between items-center">
         <h3 className="text-xl font-bold text-[#00FF9D]">Chat</h3>
+        <Button 
+          onClick={toggleSize}
+          variant="ghost" 
+          className="hover:bg-[#1C2128] text-[#00FF9D]"
+        >
+          {isExpanded ? <Minimize2 className="h-5 w-5" /> : <Maximize2 className="h-5 w-5" />}
+        </Button>
       </div>
 
       {/* message list */}
