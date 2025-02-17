@@ -1,4 +1,3 @@
-import { NextApiRequest, NextApiResponse } from 'next';
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 
@@ -10,16 +9,22 @@ const s3Client = new S3Client({
   },
 });
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export const POST = async (req: Request) => {
   if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
+    return new Response(JSON.stringify({ error: 'Method not allowed' }), {
+      status: 405,
+      headers: { 'Content-Type': 'application/json' },
+    });
   }
 
   try {
-    const { fileName, fileContent } = req.body;
+    const { fileName, fileContent } = await req.json();
 
     if (!fileName || !fileContent) {
-      return res.status(400).json({ error: 'Missing file data' });
+      return new Response(JSON.stringify({ error: 'Missing file data' }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' },
+      });
     }
 
     const fileKey = `uploads/${Date.now()}-${fileName.replace(/\s+/g, '-')}`;
@@ -44,11 +49,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       throw new Error('Upload failed');
     }
 
-    
-
-    res.status(200).json({fileKey });
+    return new Response(JSON.stringify({ fileKey }), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' },
+    });
   } catch (error) {
     console.error('Error in upload-and-create-chat:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    return new Response(JSON.stringify({ error: 'Internal server error' }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' },
+    });
   }
-}
+};
