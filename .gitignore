@@ -15,6 +15,7 @@
 
 # next.js
 /.next/
+/a_talk_with_my_pdf/
 /out/
 
 # production
