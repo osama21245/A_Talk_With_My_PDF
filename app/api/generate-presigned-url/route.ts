@@ -10,7 +10,7 @@ const s3Client = new S3Client({
 });
 
 export async function POST(req: Request) {
-  const { fileName, userId } = await req.json();
+  const { fileName} = await req.json();
   
   const fileKey = `uploads/${Date.now()}-${fileName.replace(/\s+/g, '-')}`;
   const command = new PutObjectCommand({
