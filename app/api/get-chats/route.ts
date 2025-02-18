@@ -6,15 +6,13 @@ import { NextResponse } from "next/server";
 export const runtime = "edge";
 
 export async function POST(req: Request) {
-  try {
-    const { userId } = await req.json();
-    const _chats = await db
-      .select()
-      .from(chats)
-      .where(eq(chats.userId, userId));
-
-    return NextResponse.json(_chats);
-  } catch (error) {
-    return NextResponse.json({ error: "Something went wrong" }, { status: 500 });
+    try {
+      const { userId } = await req.json();
+      const _chats = await db.select().from(chats).where(eq(chats.userId, userId));
+      return NextResponse.json(_chats);
+    } catch (error) {
+      console.error("Error fetching chats:", error); // ✅ Now 'error' is used
+      return NextResponse.json({ error: "Something went wrong" }, { status: 500 });
+    }
   }
-}
+  
