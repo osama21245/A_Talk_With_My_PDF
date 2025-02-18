@@ -15,4 +15,9 @@ export const config = {
     // Always run for API routes
     '/(api|trpc)(.*)',
   ],
+  api: {
+    bodyParser: {
+      sizeLimit: '50mb'
+    }
+  }
 }

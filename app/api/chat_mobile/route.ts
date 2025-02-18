@@ -12,38 +12,14 @@ export const maxDuration = 30;
 
 export async function POST(req: Request) {
   try {
-    const headers = new Headers({
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'POST, OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type',
-    });
-
-    if (req.method === 'OPTIONS') {
-      return new Response(null, { headers });
-    }
-
     const { messages, chatId } = await req.json();
-    
-    // Validate required fields
-    if (!chatId || !messages?.length) {
-      return new Response(
-        JSON.stringify({ error: "Missing required fields" }),
-        { status: 400, headers }
-      );
-    }
-
     const _chats = await db.select().from(chats).where(eq(chats.id, chatId));
     if (_chats.length !== 1) {
-      return new Response(
-        JSON.stringify({ error: "Chat not found" }),
-        { status: 404, headers }
-      );
+      return NextResponse.json({ error: "chat not found" }, { status: 404 });
     }
 
     const fileKey = _chats[0].fileKey;
-    const lastMessage = messages[messages.length - 1];
-    const context = await getContext(lastMessage.content, fileKey);
+    const context = await getContext(messages[messages.length - 1].content, fileKey);
 
     const prompt = {
       role: "system",
@@ -129,15 +105,9 @@ export async function POST(req: Request) {
     });
     
 
-    return new Response(completion, {
-      status: 200,
-      headers,
-    });
+    return NextResponse.json({ completion }, { status: 200 });
   } catch (error) {
     console.error("Error in POST handler:", error);
-    return new Response(
-      JSON.stringify({ error: "Internal Server Error" }),
-      { status: 500, headers: new Headers({ 'Content-Type': 'application/json' }) }
-    );
+    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }
