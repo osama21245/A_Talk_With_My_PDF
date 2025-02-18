@@ -12,6 +12,18 @@ export const maxDuration = 30;
 
 export async function POST(req: Request) {
   try {
+    // Add CORS headers
+    const headers = new Headers({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'POST, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type',
+    });
+
+    if (req.method === 'OPTIONS') {
+      return new Response(null, { headers });
+    }
+
     const { messages, chatId } = await req.json();
     const _chats = await db.select().from(chats).where(eq(chats.id, chatId));
     if (_chats.length !== 1) {
@@ -19,8 +31,7 @@ export async function POST(req: Request) {
     }
 
     const fileKey = _chats[0].fileKey;
-    const lastMessage = messages[messages.length - 1];
-    const context = await getContext(lastMessage.content, fileKey);
+    const context = await getContext(messages[messages.length - 1].content, fileKey);
 
     const prompt = {
       role: "system",
@@ -90,7 +101,7 @@ export async function POST(req: Request) {
     // Save user message into db
     await db.insert(_messages).values({
       chatId,
-      content: lastMessage.content,
+      content: messages[messages.length - 1].content,
       role: "user",
     });
 
@@ -106,9 +117,14 @@ export async function POST(req: Request) {
     });
     
 
-    return NextResponse.json({ completion }, { status: 200 });
+    return new Response(completion, {
+      status: 200,
+      headers,
+    });
   } catch (error) {
     console.error("Error in POST handler:", error);
-    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+    return new Response(JSON.stringify({ error: "Internal Server Error" }), {
+      status: 500,
+    });
   }
 }
