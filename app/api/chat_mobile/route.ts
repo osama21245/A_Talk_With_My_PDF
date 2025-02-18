@@ -12,7 +12,6 @@ export const maxDuration = 30;
 
 export async function POST(req: Request) {
   try {
-    // Add CORS headers
     const headers = new Headers({
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': '*',
@@ -25,13 +24,26 @@ export async function POST(req: Request) {
     }
 
     const { messages, chatId } = await req.json();
+    
+    // Validate required fields
+    if (!chatId || !messages?.length) {
+      return new Response(
+        JSON.stringify({ error: "Missing required fields" }),
+        { status: 400, headers }
+      );
+    }
+
     const _chats = await db.select().from(chats).where(eq(chats.id, chatId));
     if (_chats.length !== 1) {
-      return NextResponse.json({ error: "chat not found" }, { status: 404 });
+      return new Response(
+        JSON.stringify({ error: "Chat not found" }),
+        { status: 404, headers }
+      );
     }
 
     const fileKey = _chats[0].fileKey;
-    const context = await getContext(messages[messages.length - 1].content, fileKey);
+    const lastMessage = messages[messages.length - 1];
+    const context = await getContext(lastMessage.content, fileKey);
 
     const prompt = {
       role: "system",
@@ -123,8 +135,9 @@ export async function POST(req: Request) {
     });
   } catch (error) {
     console.error("Error in POST handler:", error);
-    return new Response(JSON.stringify({ error: "Internal Server Error" }), {
-      status: 500,
-    });
+    return new Response(
+      JSON.stringify({ error: "Internal Server Error" }),
+      { status: 500, headers: new Headers({ 'Content-Type': 'application/json' }) }
+    );
   }
 }
