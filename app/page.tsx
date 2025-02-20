@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { UserButton } from "@clerk/nextjs";
 import { auth } from "@clerk/nextjs/server";
 import Link from "next/link";
-import { ArrowRight, LogIn } from "lucide-react";
+import { ArrowRight, LogIn, Download } from "lucide-react";
 import FileUpload from "@/components/FileUpload";
 import { db } from "@/lib/db";
 import { chats } from "@/lib/db/schema";
@@ -10,6 +10,7 @@ import { eq } from "drizzle-orm";
 import Image from "next/image";
 import { checkSubscription } from "@/lib/subscription";
 import SubscriptionButton from "@/components/SubscriptionButton";
+import { FaAndroid } from "react-icons/fa";
 
 export default async function Home() {
   const { userId } = await auth();
@@ -112,6 +113,68 @@ export default async function Home() {
                   Login to Get Started <LogIn className="ml-3 w-5 h-5" />
                 </Button>
               </Link>
+            )}
+
+            {/* Download App Button */}
+            {isAuth && (
+              <div className="fixed bottom-8 right-8 z-50 group">
+                <a
+                  href="https://a-talk-with-my-pdf.s3.eu-north-1.amazonaws.com/uploads/app-release.apk"
+                  download
+                  className="relative flex items-center justify-center p-4 bg-[#161B22]/90 backdrop-blur-lg rounded-2xl shadow-2xl shadow-[#00FF9D]/20 hover:shadow-[#39FF14]/40 transition-all duration-300 transform hover:scale-105 border-2 border-[#00FF9D]/30 hover:border-[#39FF14]/60"
+                >
+                  {/* Animated border effect */}
+                  <div className="absolute inset-0 rounded-2xl overflow-hidden">
+                    <div className="absolute inset-0 bg-[conic-gradient(from_90deg_at_50%_50%,#00FF9D_0%,#39FF14_50%,#00FF9D_100%)] opacity-20 group-hover:opacity-30 animate-spin-slow"></div>
+                  </div>
+                  
+                  <div className="flex items-center space-x-3 relative z-10">
+                    {/* Glowing icon container */}
+                    <div className="p-2 rounded-lg bg-[#0D1117] border border-[#00FF9D]/20 group-hover:border-[#39FF14]/40">
+                      <FaAndroid className="w-8 h-8 text-[#00FF9D] group-hover:text-[#39FF14] transition-colors" />
+                    </div>
+                    
+                    {/* Text with gradient border */}
+                    <span className="text-white font-medium px-4 py-2 rounded-lg bg-[#0D1117]/80 border border-[#00FF9D]/20 group-hover:border-[#39FF14]/40 transition-colors">
+                      Get Mobile App
+                      {/* Animated underline */}
+                      <span className="absolute bottom-0 left-1/2 w-0 h-[2px] bg-[#39FF14] group-hover:w-3/4 group-hover:left-1/4 transition-all duration-300"></span>
+                    </span>
+                  </div>
+                  
+                  {/* Floating particles effect */}
+                  <div className="absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity">
+                    {[...Array(6)].map((_, i) => (
+                      <div 
+                        key={i}
+                        className="absolute w-1 h-1 bg-[#00FF9D] rounded-full animate-float"
+                        style={{
+                          left: `${Math.random() * 100}%`,
+                          top: `${Math.random() * 100}%`,
+                          animationDelay: `${i * 0.5}s`
+                        }}
+                      ></div>
+                    ))}
+                  </div>
+                </a>
+              </div>
+            )}
+
+            {!isAuth && (
+              <a 
+                href="https://a-talk-with-my-pdf.s3.eu-north-1.amazonaws.com/uploads/app-release.apk" 
+                download 
+                className="block w-full transform hover:scale-[1.02] transition-all duration-300 group"
+              >
+                <Button className="w-full bg-gradient-to-r from-[#8A2BE2] to-[#4B0082] hover:from-[#9B30FF] hover:to-[#5A009C] border-2 border-[#00FF9D]/30 text-white font-medium px-8 py-6 text-lg rounded-xl transition-all duration-300 shadow-lg shadow-[#8A2BE2]/20 hover:shadow-[#9B30FF]/40">
+                  <div className="flex items-center justify-center space-x-3">
+                    <FaAndroid className="w-6 h-6 text-[#00FF9D] group-hover:text-[#39FF14] transition-colors" />
+                    <span className="bg-gradient-to-r from-[#00FF9D] to-[#39FF14] bg-clip-text text-transparent">
+                      Get Android App
+                    </span>
+                  </div>
+                </Button>
+              </a>
             )}
           </div>
         </div>
