@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { UserButton } from "@clerk/nextjs";
 import { auth } from "@clerk/nextjs/server";
 import Link from "next/link";
-import { ArrowRight, LogIn } from "lucide-react";
+import { ArrowRight, LogIn, Download } from "lucide-react";
 import FileUpload from "@/components/FileUpload";
 import { db } from "@/lib/db";
 import { chats } from "@/lib/db/schema";
@@ -28,6 +28,7 @@ export default async function Home() {
       <div className="absolute inset-0 bg-gradient-to-b from-[#0D1117] via-[#161B22] to-[#0D1117] animate-gradient"></div>
       
       {/* Video Background */}
+      {isAuth && (
       <video
         autoPlay
         loop
@@ -37,6 +38,7 @@ export default async function Home() {
       >
         <source src="/videos/Gen-2 1463179644, move the lock and th, Default_Create_a_mes, M 10.mp4" type="video/mp4" />
       </video>
+      )}
 
       {/* Glowing Orbs */}
       <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#00FF9D]/20 rounded-full blur-[128px] animate-pulse-slow"></div>
@@ -164,14 +166,49 @@ export default async function Home() {
               <a 
                 href="https://a-talk-with-my-pdf.s3.eu-north-1.amazonaws.com/uploads/app-release.apk" 
                 download 
-                className="block w-full transform hover:scale-[1.02] transition-all duration-300 group"
+                className="block w-full group relative overflow-hidden rounded-2xl transition-all duration-500 hover:shadow-[0_0_40px_-10px_rgba(0,255,157,0.3)]"
               >
-                <Button className="w-full bg-gradient-to-r from-[#8A2BE2] to-[#4B0082] hover:from-[#9B30FF] hover:to-[#5A009C] border-2 border-[#00FF9D]/30 text-white font-medium px-8 py-6 text-lg rounded-xl transition-all duration-300 shadow-lg shadow-[#8A2BE2]/20 hover:shadow-[#9B30FF]/40">
-                  <div className="flex items-center justify-center space-x-3">
-                    <FaAndroid className="w-6 h-6 text-[#00FF9D] group-hover:text-[#39FF14] transition-colors" />
-                    <span className="bg-gradient-to-r from-[#00FF9D] to-[#39FF14] bg-clip-text text-transparent">
-                      Get Android App
+                {/* Glassmorphic background */}
+                <div className="absolute inset-0 bg-[#161B22]/80 backdrop-blur-xl rounded-2xl" />
+                
+                {/* Animated gradient border */}
+                <div className="absolute inset-0 rounded-2xl p-px">
+                  <div className="absolute inset-0 bg-gradient-to-r from-[#00FF9D] to-[#006400] opacity-15 group-hover:opacity-50 transition-opacity duration-300 rounded-2xl" />
+                </div>
+
+                <Button className="w-full relative bg-transparent border-none px-8 py-6 text-lg rounded-2xl transition-all duration-300">
+                  {/* Floating hologram effect */}
+                  <div className="absolute inset-0 opacity-10 group-hover:opacity-20 transition-opacity">
+                    <div className="absolute inset-0 bg-[url('/images/grid.svg')] opacity-50 animate-grid-pan" />
+                  </div>
+
+                  <div className="relative z-10 flex items-center justify-center space-x-3">
+                    {/* Holographic icon */}
+                    <div className="relative animate-float">
+                      <div className="absolute inset-0 bg-[#00FF9D] rounded-full blur-xl opacity-10" />
+                      <FaAndroid className="w-8 h-8 text-[#00FF9D] drop-shadow-[0_0_15px_rgba(0,255,157,0.5)]" />
+                    </div>
+
+                    {/* Animated text */}
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00FF9D] to-[#39FF14] font-bold text-xl tracking-wide transition-all duration-300 group-hover:tracking-widest">
+                      Get Mobile App
+                      <span className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-[#00FF9D] to-[#39FF14] opacity-50 group-hover:opacity-80 transition-opacity" />
                     </span>
+                  </div>
+
+                  {/* Particle trail animation */}
+                  <div className="absolute inset-0 opacity-0 group-hover:opacity-30 transition-opacity duration-500">
+                    {[...Array(12)].map((_, i) => (
+                      <div
+                        key={i}
+                        className="absolute w-1.5 h-1.5 bg-[#00FF9D] rounded-full animate-particle-trail"
+                        style={{
+                          left: `${Math.random() * 100}%`,
+                          top: `${Math.random() * 100}%`,
+                          animationDelay: `${i * 0.2}s`
+                        }}
+                      />
+                    ))}
                   </div>
                 </Button>
               </a>
